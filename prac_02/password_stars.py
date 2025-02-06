@@ -10,9 +10,9 @@ def main():
     while len(password) < PASSWORD_LENGTH:
         print(f'Password must be at least {PASSWORD_LENGTH} characters long.')
         password = input('Enter a password: ')
-    print_password(password)
+    show_stars(password)
 
-def print_password(password):
+def show_stars(password):
     """Display asterisks indicating the corresponding number of passwords."""
     print("*" * len(password))
 
