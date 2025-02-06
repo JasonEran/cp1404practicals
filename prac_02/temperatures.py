@@ -5,7 +5,7 @@ F - Convert Fahrenheit to Celsius
 Q - Quit"""
 
 def main():
-    """Main function to handle user input and temperature conversion."""
+    """Processing user input and temperature conversion."""
     print(MENU)
     choice = input(">>> ").upper()
     while choice != "Q":
