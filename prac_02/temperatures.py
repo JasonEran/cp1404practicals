@@ -1,4 +1,4 @@
-"""This module converts temperature between Celsius and Fahrenheit."""
+"""This module implements a program for printing menus and converting temperatures between Celsius and Fahrenheit."""
 
 MENU = """C - Convert Celsius to Fahrenheit
 F - Convert Fahrenheit to Celsius
