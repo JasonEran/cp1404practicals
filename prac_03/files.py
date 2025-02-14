@@ -26,9 +26,9 @@ print(f"Hi {name}!")
 Write code that opens numbers.txt, reads only the first two numbers, adds them together then prints the result, which should be... 59. Use with instead of open and close for this question.
 """
 with open("numbers.txt", "r") as file:
-    num1 = int(file.readline().strip())
-    num2 = int(file.readline().strip())
-print(num1 + num2)
+    first_number = int(file.readline().strip())
+    second_number = int(file.readline().strip())
+print(first_number + second_number)
 
 """
 4. Now write a fourth block of code that prints the total for all lines in numbers.txt. This should work for a file with any number of numbers. Use with instead of open and close for this question.
