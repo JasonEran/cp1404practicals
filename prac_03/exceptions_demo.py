@@ -6,7 +6,7 @@ When the user inputs a numerator or denominator that is not a valid integer.
 2. When will a ZeroDivisionError occur?
 When the denominator entered by the user is 0, it causes the calculation to be divided by zero.
 3. Could you change the code to avoid the possibility of a ZeroDivisionError?
-Yes,
+Yes, and I have made the following changes to the code
 """
 
 valid_input = False
