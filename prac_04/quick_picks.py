@@ -1,4 +1,3 @@
-"""Quick Pick Lottery Ticket Generator"""
 import random
 
 MIN_NUMBER = 1
