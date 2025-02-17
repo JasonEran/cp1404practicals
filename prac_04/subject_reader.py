@@ -33,7 +33,7 @@ def display_subject_details(data):
         subject_code = subject[0]
         lecturer = subject[1]
         number_of_students = subject[2]
-        print(f"{subject_code} is taught by {lecturer} and has {number_of_students} students")
+        print(f"{subject_code} is taught by {lecturer:12} and has {number_of_students:3} students")
 
 
 main()
