@@ -21,6 +21,6 @@ def print_report(incomes, number_of_months):
     for month in range(1, number_of_months + 1):
         income = incomes[month - 1]
         total += income
-        print(f"Month {month:2} - Income: ${income:10.2f} Total: ${total:10.2f}")
+        print(f"Month {month:2} - Income: ${income:10.2f}         Total: ${total:10.2f}")
 
 main()
