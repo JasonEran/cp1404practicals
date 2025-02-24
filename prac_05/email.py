@@ -33,7 +33,4 @@ def extract_name(email):
     name = ' '.join(name_parts).title()
     return name
 
-
-
-
 main()
