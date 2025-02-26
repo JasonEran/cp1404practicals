@@ -3,6 +3,7 @@ Word Occurrences
 Estimate: 15 minutes
 Actual:   32 minutes
 """
+import string
 
 def main():
     """Receive user input text, count the number of times, and format the output."""
@@ -17,6 +18,7 @@ def main():
 
 def count_word_occurrences(text):
     """Count the occurrences of words in a string."""
+    text = text.lower().translate(str.maketrans('', '', string.punctuation))
     words = text.split()
     word_counts = {}
 
