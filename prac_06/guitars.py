@@ -1,17 +1,26 @@
 """
 Guitars
 Estimate: 20 minutes
-Actual:   12 minutes
+Actual:   21 minutes
 """
 
 from prac_06.guitar import Guitar
 
 def main():
-    """Store all users' guitars and print their detailed information."""
-    print("My guitars!")
+    """Get and display guitars."""
+    guitars = get_guitars()
+
+    # guitars.append(Guitar("Gibson L-5 CES", 1922, 16035.40))
+    # guitars.append(Guitar("Line 6 JTV-59", 2010, 1512.9))
+
+    display_guitars(guitars)
+
+def get_guitars():
+    """Get a list of guitars from user input."""
     guitars = []
+    print("My guitars!")
     name = input("Name: ")
-    # User input loop
+
     while name != "":
         year = int(input("Year: "))
         cost = float(input("Cost: $"))
@@ -20,11 +29,12 @@ def main():
         guitars.append(guitar)
         print(f"{guitar} added.\n")
         name = input("Name: ")
-    # Test data
-    # guitars.append(Guitar("Gibson L-5 CES", 1922, 16035.40))
-    # guitars.append(Guitar("Line 6 JTV-59", 2010, 1512.9))
 
-    # Display guitars
+    return guitars
+
+
+def display_guitars(guitars):
+    """Display the list of guitars."""
     print("These are my guitars:")
     for i, guitar in enumerate(guitars, 1):
         vintage_string = " (vintage)" if guitar.is_vintage() else ""
