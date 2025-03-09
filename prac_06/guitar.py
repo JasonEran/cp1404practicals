@@ -1,3 +1,4 @@
+"""CP1404/CP5632 Practical - Guitar class."""
 """
 Guitar
 Estimate: 15 minutes
