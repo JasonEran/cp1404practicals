@@ -1,5 +1,5 @@
 """
-Guitar
+Guitar test
 Estimate: 10 minutes
 Actual:   13 minutes
 """
