@@ -2,7 +2,7 @@
 CP1404/CP5632 Practical
 My Guitars
 """
-
+from prac_03.exceptions_to_complete import is_finished
 from prac_07.guitar import Guitar, CURRENT_YEAR
 
 FILENAME = "guitars.csv"
@@ -47,30 +47,28 @@ def display_guitars(guitars):
 
 
 def get_valid_year():
-    """Get a valid year from user with recursion."""
-    try:
-        year = int(input("Year: "))
-        if 0 <= year <= CURRENT_YEAR:
-            return year
-        print(f"Invalid year. Must be between 0 and {CURRENT_YEAR}")
-        return get_valid_year()
-    except ValueError:
-        print(f"Invalid year. Must be between 0 and {CURRENT_YEAR}")
-        return get_valid_year()
-
+    """Get a valid year from user."""
+    while True:
+        try:
+            year = int(input("Year: "))
+            if 0 <= year <= CURRENT_YEAR:
+                return year
+            else:
+                print(f"Invalid year. Must be between 0 and {CURRENT_YEAR}")
+        except ValueError:
+            print(f"Invalid year. Must be between 0 and {CURRENT_YEAR}")
 
 def get_valid_cost():
-    """Get a valid cost from user with recursion."""
-    try:
-        cost = float(input("Cost: $"))
-        if cost >= 0:
-            return cost
-        print("Cost must be a positive number")
-        return get_valid_cost()
-    except ValueError:
-        print("Cost must be a positive number")
-        return get_valid_cost()
-
+    """Get a valid cost from user."""
+    while True:
+        try:
+            cost = float(input("Cost: $"))
+            if cost >= 0:
+                return cost
+            else:
+                print("Cost must be a positive number")
+        except ValueError:
+            print("Cost must be a positive number")
 
 def get_new_guitar():
     """Get details for a new guitar from user."""
