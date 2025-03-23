@@ -5,6 +5,7 @@ Actual:   212 minutes
 """
 import datetime
 from prac_07.project import Project
+from operator import itemgetter
 
 WELCOME_MESSAGE = "Welcome to Pythonic Project Management"
 DEFAULT_FILENAME = "projects.txt"
@@ -176,7 +177,7 @@ def get_filter_date():
 def get_projects_after_date(projects, filter_date):
     """Return projects starting after the given date, sorted by start date."""
     filtered_projects = [project for project in projects if project.start_date > filter_date]
-    filtered_projects.sort(key=lambda project: project.start_date)
+    filtered_projects.sort(key=itemgetter('start_date'))
     return filtered_projects
 
 def add_project(projects):
