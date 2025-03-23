@@ -7,7 +7,7 @@ import datetime
 from prac_07.project import Project
 
 WELCOME_MESSAGE = "Welcome to Pythonic Project Management"
-FILENAME = "projects.txt"
+DEFAULT_FILENAME = "projects.txt"
 MENU = """- (L)oad projects  
 - (S)ave projects  
 - (D)isplay projects  
@@ -15,15 +15,35 @@ MENU = """- (L)oad projects
 - (A)dd new project  
 - (U)pdate project
 - (Q)uit"""
+DATE_FORMAT = "%d/%m/%Y"
+FILE_HEADER = "Name\tStart Date\tPriority\tCost Estimate\tCompletion Percentage\n"
+
+LOAD_PROMPT = "Enter filename to load from: "
+SAVE_PROMPT = "Enter filename to save to: "
+ADD_PROJECT_PROMPT = "Let's add a new project"
+NAME_PROMPT = "Name: "
+START_DATE_PROMPT = "Start date (dd/mm/yy): "
+PRIORITY_PROMPT = "Priority: "
+COST_ESTIMATE_PROMPT = "Cost estimate: "
+COMPLETION_PERCENTAGE_PROMPT = "Percent complete: "
+FILTER_DATE_PROMPT = "Show projects that start after date (dd/mm/yy): "
+PROJECT_CHOICE_PROMPT = "Project choice: "
+NEW_PERCENTAGE_PROMPT = "New Percentage: "
+NEW_PRIORITY_PROMPT = "New Priority: "
+SAVE_ON_EXIT_PROMPT = "Would you like to save to {}? "
+
+MIN_COMPLETION_PERCENTAGE = 0
+MAX_COMPLETION_PERCENTAGE = 100
+MIN_PRIORITY = 1
 
 def main():
     """Run the project management program."""
     print(WELCOME_MESSAGE)
     try:
-        projects = load_projects(FILENAME)
-        print(f"Loaded {len(projects)} projects from {FILENAME}")
+        projects = load_projects(DEFAULT_FILENAME)
+        print(f"Loaded {len(projects)} projects from {DEFAULT_FILENAME}")
     except FileNotFoundError:
-        print(f"Error: {FILENAME} not found. Starting with an empty project list.")
+        print(f"Error: {DEFAULT_FILENAME} not found. Starting with an empty project list.")
         projects = []
 
     choice = get_user_choice()
@@ -43,7 +63,7 @@ def main():
         else:
             print("Invalid choice")
         choice = get_user_choice()
-    exit_with_save_option(projects, FILENAME)
+    exit_with_save_option(projects, DEFAULT_FILENAME)
 
 def get_user_choice():
     """Display the menu and get the user's choice."""
@@ -53,9 +73,9 @@ def get_user_choice():
 def load_projects(filename):
     """Load projects from a tab-delimited file."""
     projects = []
-    with open(filename, 'r') as in_file:
-        lines = in_file.readlines()
-        for line in lines[1:]:
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+        for line in lines[1:]:  # Skip header
             project = parse_project_line(line)
             if project:
                 projects.append(project)
@@ -70,11 +90,11 @@ def parse_project_line(line):
         return None
     try:
         name = parts[0]
-        start_date = datetime.datetime.strptime(parts[1], "%d/%m/%Y").date()
+        start_date = datetime.datetime.strptime(parts[1], DATE_FORMAT).date()
         priority = int(parts[2])
         cost_estimate = float(parts[3])
         completion_percentage = int(parts[4])
-        if not (0 <= completion_percentage <= 100):
+        if not (MIN_COMPLETION_PERCENTAGE <= completion_percentage <= MAX_COMPLETION_PERCENTAGE):
             return None
         return Project(name, start_date, priority, cost_estimate, completion_percentage)
     except (ValueError, TypeError):
@@ -84,7 +104,7 @@ def save_projects(filename, projects):
     """Save projects to a tab-delimited file."""
     try:
         with open(filename, 'w') as file:
-            file.write("Name\tStart Date\tPriority\tCost Estimate\tCompletion Percentage\n")
+            file.write(FILE_HEADER)
             for project in projects:
                 file.write(format_project_for_file(project))
     except IOError as e:
@@ -92,12 +112,12 @@ def save_projects(filename, projects):
 
 def format_project_for_file(project):
     """Format a Project object into a string for file writing."""
-    start_date_str = project.start_date.strftime("%d/%m/%Y")
+    start_date_str = project.start_date.strftime(DATE_FORMAT)
     return f"{project.name}\t{start_date_str}\t{project.priority}\t{project.cost_estimate}\t{project.completion_percentage}\n"
 
 def load_from_user_file():
     """Load projects from a user-specified file."""
-    filename = input("Enter filename to load from: ")
+    filename = input(LOAD_PROMPT)
     try:
         projects = load_projects(filename)
         print(f"Loaded {len(projects)} projects from {filename}")
@@ -108,7 +128,7 @@ def load_from_user_file():
 
 def save_to_user_file(projects):
     """Save projects to a user-specified file."""
-    filename = input("Enter filename to save to: ")
+    filename = input(SAVE_PROMPT)
     save_projects(filename, projects)
     print(f"Saved {len(projects)} projects to {filename}")
 
@@ -147,9 +167,9 @@ def filter_by_date(projects):
 
 def get_filter_date():
     """Get the filter date from the user, returning None if invalid."""
-    date_string = input("Show projects that start after date (dd/mm/yy): ")
+    date_string = input(FILTER_DATE_PROMPT)
     try:
-        return datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+        return datetime.datetime.strptime(date_string, DATE_FORMAT).date()
     except ValueError:
         return None
 
@@ -161,16 +181,16 @@ def get_projects_after_date(projects, filter_date):
 
 def add_project(projects):
     """Add a new project to the list based on user input."""
-    print("Let's add a new project")
-    name = input("Name: ")
+    print(ADD_PROJECT_PROMPT)
+    name = input(NAME_PROMPT)
     start_date = get_start_date()
     if not start_date:
         print("Error: Invalid start date. Project not added.")
         return
 
     try:
-        priority = int(input("Priority: "))
-        if priority < 1:
+        priority = int(input(PRIORITY_PROMPT))
+        if priority < MIN_PRIORITY:
             print("Error: Priority must be a positive integer. Project not added.")
             return
     except ValueError:
@@ -178,7 +198,7 @@ def add_project(projects):
         return
 
     try:
-        cost_estimate = float(input("Cost estimate: "))
+        cost_estimate = float(input(COST_ESTIMATE_PROMPT))
         if cost_estimate < 0:
             print("Error: Cost estimate cannot be negative. Project not added.")
             return
@@ -187,8 +207,8 @@ def add_project(projects):
         return
 
     try:
-        completion_percentage = int(input("Percent complete: "))
-        if not (0 <= completion_percentage <= 100):
+        completion_percentage = int(input(COMPLETION_PERCENTAGE_PROMPT))
+        if not (MIN_COMPLETION_PERCENTAGE <= completion_percentage <= MAX_COMPLETION_PERCENTAGE):
             print("Error: Completion percentage must be between 0 and 100. Project not added.")
             return
     except ValueError:
@@ -200,9 +220,9 @@ def add_project(projects):
 
 def get_start_date():
     """Get the start date from the user, returning None if invalid."""
-    date_string = input("Start date (dd/mm/yy): ")
+    date_string = input(START_DATE_PROMPT)
     try:
-        return datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+        return datetime.datetime.strptime(date_string, DATE_FORMAT).date()
     except ValueError:
         return None
 
@@ -213,7 +233,7 @@ def update_project(projects):
         return
     display_project_list(projects)
     try:
-        choice = int(input("Project choice: "))
+        choice = int(input(PROJECT_CHOICE_PROMPT))
         if not (0 <= choice < len(projects)):
             print("Error: Invalid project number. Update skipped.")
             return
@@ -231,11 +251,11 @@ def display_project_list(projects):
 
 def update_project_completion(project):
     """Update the project's completion percentage if a new value is provided."""
-    new_percentage_str = input("New Percentage: ")
+    new_percentage_str = input(NEW_PERCENTAGE_PROMPT)
     if new_percentage_str:
         try:
             new_percentage = int(new_percentage_str)
-            if 0 <= new_percentage <= 100:
+            if MIN_COMPLETION_PERCENTAGE <= new_percentage <= MAX_COMPLETION_PERCENTAGE:
                 project.completion_percentage = new_percentage
             else:
                 print("Error: Completion percentage must be between 0 and 100.")
@@ -244,11 +264,11 @@ def update_project_completion(project):
 
 def update_project_priority(project):
     """Update the project's priority if a new value is provided."""
-    new_priority_str = input("New Priority: ")
+    new_priority_str = input(NEW_PRIORITY_PROMPT)
     if new_priority_str:
         try:
             new_priority = int(new_priority_str)
-            if new_priority >= 1:
+            if new_priority >= MIN_PRIORITY:
                 project.priority = new_priority
             else:
                 print("Error: Priority must be a positive integer.")
@@ -257,7 +277,7 @@ def update_project_priority(project):
 
 def exit_with_save_option(projects, filename):
     """Exit the program, optionally saving to the default file."""
-    save_choice = input(f"Would you like to save to {filename}? ").lower()
+    save_choice = input(SAVE_ON_EXIT_PROMPT.format(filename)).lower()
     if save_choice.startswith('y'):
         save_projects(filename, projects)
         print(f"Saved {len(projects)} projects to {filename}")
