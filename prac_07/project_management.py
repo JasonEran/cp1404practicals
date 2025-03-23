@@ -49,8 +49,8 @@ def get_user_choice():
 def load_projects(filename):
     """Load projects from a tab-delimited file."""
     projects = []
-    with open(filename, 'r') as file:
-        lines = file.readlines()
+    with open(filename, 'r') as in_file:
+        lines = in_file.readlines()
         for line in lines[1:]:  # Skip header
             projects.append(parse_project_line(line))
     return projects
@@ -67,10 +67,10 @@ def parse_project_line(line):
 
 def save_projects(filename, projects):
     """Save projects to a tab-delimited file."""
-    with open(filename, 'w') as file:
-        file.write("Name\tStart Date\tPriority\tCost Estimate\tCompletion Percentage\n")
+    with open(filename, 'w') as out_file:
+        out_file.write("Name\tStart Date\tPriority\tCost Estimate\tCompletion Percentage\n")
         for project in projects:
-            file.write(format_project_for_file(project))
+            out_file.write(format_project_for_file(project))
 
 def format_project_for_file(project):
     """Format a Project object into a string for file writing."""
@@ -180,3 +180,5 @@ def exit_with_save_option(projects, filename):
         save_projects(filename, projects)
         print(f"Saved {len(projects)} projects to {filename}")
     print("Thank you for using custom-built project management software.")
+
+main()
