@@ -73,8 +73,8 @@ def get_user_choice():
 def load_projects(filename):
     """Load projects from a tab-delimited file."""
     projects = []
-    with open(filename, 'r') as file:
-        lines = file.readlines()
+    with open(filename, 'r') as in_file:
+        lines = in_file.readlines()
         for line in lines[1:]:  # Skip header
             project = parse_project_line(line)
             if project:
@@ -103,10 +103,10 @@ def parse_project_line(line):
 def save_projects(filename, projects):
     """Save projects to a tab-delimited file."""
     try:
-        with open(filename, 'w') as file:
-            file.write(FILE_HEADER)
+        with open(filename, 'w') as out_file:
+            out_file.write(FILE_HEADER)
             for project in projects:
-                file.write(format_project_for_file(project))
+                out_file.write(format_project_for_file(project))
     except IOError as e:
         print(f"Error: Could not save to {filename} ({e})")
 
@@ -134,34 +134,34 @@ def save_to_user_file(projects):
 
 def display_projects(projects):
     """Display incomplete and completed projects, sorted by priority."""
-    incomplete = get_incomplete_projects(projects)
-    completed = get_completed_projects(projects)
+    incomplete_projects = get_incomplete_projects(projects)
+    completed_projects = get_completed_projects(projects)
     print("Incomplete projects: ")
-    for p in incomplete:
-        print(f"  {p}")
+    for project in incomplete_projects:
+        print(f"  {project}")
     print("Completed projects: ")
-    for p in completed:
-        print(f"  {p}")
+    for project in completed_projects:
+        print(f"  {project}")
 
 def get_incomplete_projects(projects):
     """Return a list of incomplete projects, sorted by priority."""
-    incomplete = [p for p in projects if not p.is_complete()]
-    incomplete.sort()
-    return incomplete
+    incomplete_projects = [project for project in projects if not project.is_complete()]
+    incomplete_projects.sort()
+    return incomplete_projects
 
 def get_completed_projects(projects):
     """Return a list of completed projects, sorted by priority."""
-    completed = [p for p in projects if p.is_complete()]
-    completed.sort()
-    return completed
+    completed_projects = [project for project in projects if project.is_complete()]
+    completed_projects.sort()
+    return completed_projects
 
 def filter_by_date(projects):
     """Filter and display projects starting after a user-specified date."""
     filter_date = get_filter_date()
     if filter_date:
-        filtered = get_projects_after_date(projects, filter_date)
-        for p in filtered:
-            print(p)
+        filtered_projects = get_projects_after_date(projects, filter_date)
+        for project in filtered_projects:
+            print(project)
     else:
         print("Error: Invalid date format. Filtering skipped.")
 
@@ -175,9 +175,9 @@ def get_filter_date():
 
 def get_projects_after_date(projects, filter_date):
     """Return projects starting after the given date, sorted by start date."""
-    filtered = [p for p in projects if p.start_date > filter_date]
-    filtered.sort(key=lambda p: p.start_date)
-    return filtered
+    filtered_projects = [project for project in projects if project.start_date > filter_date]
+    filtered_projects.sort(key=lambda project: project.start_date)
+    return filtered_projects
 
 def add_project(projects):
     """Add a new project to the list based on user input."""
@@ -246,8 +246,8 @@ def update_project(projects):
 
 def display_project_list(projects):
     """Display the list of projects with indices."""
-    for i, p in enumerate(projects):
-        print(f"{i} {p}")
+    for index, project in enumerate(projects):
+        print(f"{index} {project}")
 
 def update_project_completion(project):
     """Update the project's completion percentage if a new value is provided."""
