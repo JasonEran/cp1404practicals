@@ -81,13 +81,13 @@ def get_new_guitar():
 
 
 def add_guitars_recursively(guitars):
-    """Recursively add new guitars to the list."""
-    new_guitar = get_new_guitar()
-    if new_guitar is None:
-        return guitars
-    guitars.append(new_guitar)
-    return add_guitars_recursively(guitars)
-
+    """Add new guitars to the list iteratively."""
+    while True:
+        new_guitar = get_new_guitar()
+        if new_guitar is None:
+            break
+        guitars.append(new_guitar)
+    return guitars
 
 def save_guitars(filename, guitars):
     """Save all guitars to CSV file."""
