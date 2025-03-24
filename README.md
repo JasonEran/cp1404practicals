@@ -1,4 +1,3 @@
-# Practical 07
 # Practicals Repository
 
 Welcome to my `practicals` repository! This repository contains my solutions and projects completed as part of the CP1404 subject at James Cook University. It’s a collection of practical exercises designed to improve my programming skills, with a focus on Python and clean code principles.
