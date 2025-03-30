@@ -1,6 +1,9 @@
+"""
+CP1404/CP5632 Practical
+Kivy GUI program about BoxLayoutDemo
+"""
 from kivy.app import App
 from kivy.lang import Builder
-
 
 class BoxLayoutDemo(App):
     """SquareNumberApp is a Kivy App for create and manage a presentation application based on Box layout."""
