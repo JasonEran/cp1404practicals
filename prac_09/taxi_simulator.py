@@ -1,9 +1,8 @@
 """
 CP1404/CP5632 Practical taxi simulator
 Estimate: 60 minutes
-Actual:   72 minutes
+Actual:   82 minutes
 """
-# taxi_simulator.py
 from taxi import Taxi
 from silver_service_taxi import SilverServiceTaxi
 
