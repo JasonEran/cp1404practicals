@@ -3,43 +3,37 @@ import wikipedia
 
 
 def get_page_details():
+    """Retrieve page details from Wikipedia"""
     while True:
         # Prompt user for input
-        search_term = input("Enter a page title or search phrase (or press Enter to quit): ").strip()
+        search_term = input("Enter page title: ").strip()
 
         # Check for blank input to exit
         if not search_term:
-            print("Exiting program.")
+            print("Thank you.")
             break
 
         try:
             # Get the page with autosuggest disabled to avoid unexpected suggestions
             page = wikipedia.page(search_term, auto_suggest=False)
 
-            # Print page details
-            print("\nPage Title:", page.title)
-            print("Summary (first 200 characters):", wikipedia.summary(search_term, sentences=2)[:200] + "...")
-            print("URL:", page.url)
-            print("-" * 50)
+            # Print page details: title, full summary, and URL
+            print(page.title)
+            print(wikipedia.summary(search_term))
+            print(page.url)
 
         except wikipedia.exceptions.DisambiguationError as e:
-            # Handle disambiguation error (e.g., "Python" may refer to multiple topics)
-            print(f"\nError: '{search_term}' is ambiguous. Possible options include:")
-            for option in e.options[:5]:  # Limit to first 5 options for brevity
-                print(f"- {option}")
-            print("Please be more specific.")
-            print("-" * 50)
+            # Handle disambiguation error (e.g., "python")
+            print("We need a more specific title. Try one of the following, or a new search:")
+            print(e.options)  # Print the list of options as shown in sample
 
         except wikipedia.exceptions.PageError:
-            # Handle page not found error (e.g., "jcu" may not exist)
-            print(f"\nError: No page found for '{search_term}'.")
-            print("Please try a different title or search phrase.")
-            print("-" * 50)
+            # Handle page not found error (e.g., "jcu")
+            print(f'Page id "{search_term}" does not match any pages. Try another id!')
 
         except Exception as e:
             # Handle any other unexpected errors
-            print(f"\nAn unexpected error occurred: {str(e)}")
-            print("-" * 50)
+            print(f"An unexpected error occurred: {str(e)}")
 
 
 if __name__ == "__main__":
