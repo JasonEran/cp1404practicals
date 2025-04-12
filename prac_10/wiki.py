@@ -2,17 +2,11 @@
 import wikipedia
 
 
-def get_page_details():
+def main():
     """Retrieve page details from Wikipedia"""
-    while True:
-        # Prompt user for input
-        search_term = input("Enter page title: ").strip()
-
-        # Check for blank input to exit
-        if not search_term:
-            print("Thank you.")
-            break
-
+    # Prompt user for input
+    search_term = input("Enter page title: ").strip()
+    while not search_term:
         try:
             # Get the page with autosuggest disabled to avoid unexpected suggestions
             page = wikipedia.page(search_term, auto_suggest=False)
@@ -35,6 +29,9 @@ def get_page_details():
             # Handle any other unexpected errors
             print(f"An unexpected error occurred: {str(e)}")
 
+        # Prompt user for input
+        search_term = input("Enter page title: ").strip()
+
 
 if __name__ == "__main__":
-    get_page_details()
+    main()
